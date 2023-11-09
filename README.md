@@ -6,13 +6,20 @@
 
 [![Tests](https://github.com/multividas/query-filters/actions/workflows/tests.yml/badge.svg)](https://github.com/multividas/query-filters/actions/workflows/tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/multividas/query-filters.svg?style=flat-square)](https://packagist.org/packages/multividas/query-filters)
-[![License](https://img.shields.io/github/license/multividas/query-filters?style=flat-square)](https://github.com/multividas/query-filters/blob/master/LICENSE.md)
+[![License](https://img.shields.io/github/license/multividas/query-filters?style=flat-square)](https://github.com/multividas/query-filters/blob/main/LICENSE)
 
 </div>
 
 Composer package to simplify the process of filtering and sorting queries.
 
 ---
+
+## Installation
+Require this package with composer. It is recommended to only require the package for development.
+
+```shell
+composer require multividas/query-filters --dev
+```
 
 ### Run PHPUnit tests
 
