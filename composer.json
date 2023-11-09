@@ -1,0 +1,53 @@
+{
+    "name": "multividas/query-filters",
+    "description": "composer package to simplify the process of filtering and sorting queries.",
+    "keywords": [
+        "query-filters"
+    ],
+    "type": "package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "multividas inc",
+            "email": "contact@multividas.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Multividas\\QueryFilters\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Multividas\\QueryFilters\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit tests/Feature",
+        "php-psr": [
+            "./vendor/bin/phpcs --standard=PSR2 --encoding=utf-8 --extensions=php src/* tests/*"
+        ]
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.4 || ^8.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "dev-develop",
+        "squizlabs/php_codesniffer": "4.0.x-dev",
+        "phpunit/phpunit": "9.6.x-dev"
+    },
+    "config": {
+        "optimize-autoloader": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Multividas\\QueryFilters\\Providers\\QueryFiltersServiceProvider"
+            ],
+            "aliases": {
+                "QueryFilters": "Multividas\\QueryFilters\\Facades\\QueryFilters"
+            }
+        }
+    }
+}
