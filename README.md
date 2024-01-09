@@ -21,6 +21,9 @@ Require this package with composer. It is recommended to only require the packag
 composer require multividas/query-filters --dev
 ```
 
+Learn more: [Multividas Query Filters](https://developers.multividas.com/rest/introduction/query-filters)
+
+
 ### Run PHPUnit tests
 
 ```sh
