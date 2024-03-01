@@ -14,11 +14,6 @@ use Multividas\QueryFilters\Interfaces\QueryFiltersRepositoryInterface;
 
 class QueryFiltersServiceProvider extends ServiceProvider
 {
-    public function boot(): void
-    {
-        //
-    }
-
     public function register(): void
     {
         $this->app->bind(QueryFiltersRepositoryInterface::class, function () {

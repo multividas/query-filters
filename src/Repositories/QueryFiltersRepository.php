@@ -9,35 +9,31 @@
 namespace Multividas\QueryFilters\Repositories;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Multividas\ApiResponser\Traits\ApiResponser;
-use Multividas\QueryFilters\Services\Caching\CacheService;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Multividas\QueryFilters\Interfaces\QueryFiltersRepositoryInterface;
 
 class QueryFiltersRepository implements QueryFiltersRepositoryInterface
 {
-    use ApiResponser;
-
     private string $url;
     private string $fullUrl;
-    private string|array|null $queryParams;
     private string $queryString;
+    private string|array|null $queryParams;
     
     /**
      * Method __construct
      *
-     * @param private CacheService $cacheService
-     *
      * @return void
      */
-    public function __construct(
-        private CacheService $cacheService
-    ) {
+    public function __construct()
+    {
         $this->url = request()->url();
+
         $this->queryParams = request()->query();
         ksort($this->queryParams);
+
         $this->queryString = http_build_query($this->queryParams);
 
         $this->fullUrl = "{$this->url}?{$this->queryString}";
@@ -133,7 +129,7 @@ class QueryFiltersRepository implements QueryFiltersRepositoryInterface
     public function cacheData(
         Collection|EloquentCollection|JsonResource $collection
     ): Collection|EloquentCollection|JsonResource {
-        return $this->cacheService->remember($this->fullUrl, now()->addSeconds(60), function () use ($collection) {
+        return Cache::remember($this->fullUrl, now()->addSeconds(60), function () use ($collection) {
             return $collection;
         });
     }
