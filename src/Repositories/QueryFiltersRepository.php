@@ -10,10 +10,9 @@ namespace Multividas\QueryFilters\Repositories;
 
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-
 use Illuminate\Http\Resources\Json\JsonResource;
 use Multividas\ApiResponser\Traits\ApiResponser;
-
+use Multividas\QueryFilters\Services\Caching\CacheService;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Multividas\QueryFilters\Interfaces\QueryFiltersRepositoryInterface;
 
@@ -21,6 +20,36 @@ class QueryFiltersRepository implements QueryFiltersRepositoryInterface
 {
     use ApiResponser;
 
+    private string $url;
+    private string $fullUrl;
+    private string|array|null $queryParams;
+    private string $queryString;
+    
+    /**
+     * Method __construct
+     *
+     * @param private CacheService $cacheService
+     *
+     * @return void
+     */
+    public function __construct(
+        private CacheService $cacheService
+    ) {
+        $this->url = request()->url();
+        $this->queryParams = request()->query();
+        ksort($this->queryParams);
+        $this->queryString = http_build_query($this->queryParams);
+
+        $this->fullUrl = "{$this->url}?{$this->queryString}";
+    }
+
+    /**
+     * Method applyFilters
+     *
+     * @param Collection|EloquentCollection|JsonResource $collection
+     *
+     * @return array
+     */
     public function applyFilters(Collection|EloquentCollection|JsonResource $collection): array
     {
         if ($collection instanceof Collection || $collection instanceof EloquentCollection) {
@@ -39,8 +68,31 @@ class QueryFiltersRepository implements QueryFiltersRepositoryInterface
             'meta' => $paginatedResult['meta'],
         ];
     }
-
-    protected function filterData(
+    
+    /**
+     * Method cacheData
+     *
+     * @param Collection|EloquentCollection|JsonResource $collection
+     *
+     * @return Collection|EloquentCollection|JsonResource
+     */
+    public function cacheData(
+        Collection|EloquentCollection|JsonResource $collection
+    ): Collection|EloquentCollection|JsonResource {
+        return $this->cacheService->remember($this->fullUrl, now()->addSeconds(60), function () use ($collection) {
+            return $collection;
+        });
+    }
+    
+    /**
+     * Method filterData
+     *
+     * @param Collection|EloquentCollection|JsonResource $collection
+     * @param ?string $transformer
+     *
+     * @return Collection|EloquentCollection|JsonResource
+     */
+    public function filterData(
         Collection|EloquentCollection|JsonResource $collection,
         ?string $transformer
     ): Collection|EloquentCollection|JsonResource {
@@ -58,8 +110,16 @@ class QueryFiltersRepository implements QueryFiltersRepositoryInterface
 
         return $collection;
     }
-
-    protected function sortData(
+    
+    /**
+     * Method sortData
+     *
+     * @param Collection|EloquentCollection|JsonResource $collection
+     * @param ?string $transformer
+     *
+     * @return Collection|EloquentCollection|JsonResource
+     */
+    public function sortData(
         Collection|EloquentCollection|JsonResource $collection,
         ?string $transformer
     ): Collection|EloquentCollection|JsonResource {
@@ -77,8 +137,15 @@ class QueryFiltersRepository implements QueryFiltersRepositoryInterface
 
         return $collection;
     }
-
-    protected function paginateData(Collection|EloquentCollection|JsonResource $collection): array
+    
+    /**
+     * Method paginateData
+     *
+     * @param Collection|EloquentCollection|JsonResource $collection
+     *
+     * @return array
+     */
+    public function paginateData(Collection|EloquentCollection|JsonResource $collection): array
     {
         $rules = [
             'per_page' => ['integer', 'min:2', 'max:50'],
