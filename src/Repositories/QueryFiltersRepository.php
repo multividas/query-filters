@@ -70,21 +70,6 @@ class QueryFiltersRepository implements QueryFiltersRepositoryInterface
     }
     
     /**
-     * Method cacheData
-     *
-     * @param Collection|EloquentCollection|JsonResource $collection
-     *
-     * @return Collection|EloquentCollection|JsonResource
-     */
-    public function cacheData(
-        Collection|EloquentCollection|JsonResource $collection
-    ): Collection|EloquentCollection|JsonResource {
-        return $this->cacheService->remember($this->fullUrl, now()->addSeconds(60), function () use ($collection) {
-            return $collection;
-        });
-    }
-    
-    /**
      * Method filterData
      *
      * @param Collection|EloquentCollection|JsonResource $collection
@@ -136,6 +121,21 @@ class QueryFiltersRepository implements QueryFiltersRepositoryInterface
         }
 
         return $collection;
+    }
+
+    /**
+     * Method cacheData
+     *
+     * @param Collection|EloquentCollection|JsonResource $collection
+     *
+     * @return Collection|EloquentCollection|JsonResource
+     */
+    public function cacheData(
+        Collection|EloquentCollection|JsonResource $collection
+    ): Collection|EloquentCollection|JsonResource {
+        return $this->cacheService->remember($this->fullUrl, now()->addSeconds(60), function () use ($collection) {
+            return $collection;
+        });
     }
     
     /**
