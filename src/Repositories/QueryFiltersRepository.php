@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * (c) 2024 Multividas. All rights reserved.
  * Unauthorized use prohibited.
@@ -21,7 +23,7 @@ class QueryFiltersRepository implements QueryFiltersRepositoryInterface
     private string $fullUrl;
     private string $queryString;
     private string|array|null $queryParams;
-    
+
     /**
      * Method __construct
      *
@@ -64,7 +66,7 @@ class QueryFiltersRepository implements QueryFiltersRepositoryInterface
             'meta' => $paginatedResult['meta'],
         ];
     }
-    
+
     /**
      * Method filterData
      *
@@ -91,7 +93,7 @@ class QueryFiltersRepository implements QueryFiltersRepositoryInterface
 
         return $collection;
     }
-    
+
     /**
      * Method sortData
      *
@@ -133,7 +135,7 @@ class QueryFiltersRepository implements QueryFiltersRepositoryInterface
             return $collection;
         });
     }
-    
+
     /**
      * Method paginateData
      *
