@@ -37,9 +37,8 @@ class QueryFiltersRepository implements QueryFiltersRepositoryInterface
 
         $collection = $this->filterData($collection, $transformer);
         $collection = $this->sortData($collection, $transformer);
-        $cachedData = app(CachingService::class)->cacheData($collection);
 
-        return $cachedData;
+        return $collection;
     }
 
     /**
