@@ -15,6 +15,7 @@ Composer package to simplify the process of filtering and sorting queries
 ---
 
 ## Installation
+
 Require this package with composer.
 
 ```shell

@@ -17,6 +17,10 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 interface QueryFiltersRepositoryInterface
 {
+    public function listAll(
+        Collection|EloquentCollection|JsonResource $collection
+    ): Collection|EloquentCollection|JsonResource;
+
     public function applyFilters(Collection|EloquentCollection|JsonResource $collection): array|JsonResponse;
 
     public function filterData(
@@ -27,10 +31,6 @@ interface QueryFiltersRepositoryInterface
     public function sortData(
         Collection|EloquentCollection|JsonResource $collection,
         ?string $transformer
-    ): Collection|EloquentCollection|JsonResource;
-
-    public function cacheData(
-        Collection|EloquentCollection|JsonResource $collection
     ): Collection|EloquentCollection|JsonResource;
 
     public function paginateData(Collection|EloquentCollection|JsonResource $collection): array;
