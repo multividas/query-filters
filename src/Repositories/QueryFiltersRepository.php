@@ -20,24 +20,15 @@ use Multividas\QueryFilters\Interfaces\QueryFiltersRepositoryInterface;
 class QueryFiltersRepository implements QueryFiltersRepositoryInterface
 {
     /**
-     * Method __construct
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-
-    }
-
-    /**
      * Method listAll
      *
      * @param Collection|EloquentCollection|JsonResource $collection
      *
      * @return array
      */
-    public function listAll(Collection|EloquentCollection|JsonResource $collection): Collection|EloquentCollection|JsonResource
-    {
+    public function listAll(
+        Collection|EloquentCollection|JsonResource $collection
+    ): Collection|EloquentCollection|JsonResource {
         if ($collection instanceof Collection || $collection instanceof EloquentCollection) {
             $transformer = $collection->first()?->transformer ?? null;
         } elseif ($collection instanceof JsonResource) {
